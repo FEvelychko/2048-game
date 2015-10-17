@@ -75,13 +75,16 @@
         nextItem = leftItems[randomNext];
         tileContainer.innerHTML += nextItem;
         leftItems = [];
-        for(var j = 0; j < defaultTemplate.length; j++){
-            for(var k = 0; k < tileContainer.children.length; k++){
-                if(defaultTemplate[j].slice(38, 40) != tileContainer.children[k].className.slice(26, 28)){
+        for(var j = 0; j < defaultTemplate.length; j++) {
+            for (var k = 0; k < tileContainer.children.length; k++) {
+                if (defaultTemplate[j].slice(38, 40) != tileContainer.children[k].className.slice(26, 28)) {
                     leftItems.push(defaultTemplate[j]);
                 }
             }
-
+            for(var l = 0; l < tileContainer.children.length - 1; l++){
+                leftItems.pop();
+                //leftItems.splice(1, (tileContainer.children.length - 1));
+            }
         }
         return leftItems;
      }

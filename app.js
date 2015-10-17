@@ -2,8 +2,6 @@
  * Created by Maksym on 05.10.2015.
  */
 
-//debugger;
-//    var tileContainer = document.getElementsByClassName('tile-container');
     var tileContainer = document.getElementById('tile-container');
     var defaultTemplate = [
         '<div class="tile tile-2 tile-position-11 tile-new"><div class="tile-inner">2</div></div>',
@@ -41,73 +39,69 @@
     ];
 
 
-    var firstNumber = undefined;
-    var secondNumber = undefined;
-    var thirdNumber = undefined;
+    var firstItem = undefined; // змінні що були створені, але не були про ініціалізовані а null змінні що були очищенні до певного місця знчення
+    var secondItem = undefined;
+    var nextItem = undefined;
+    var leftItems = []; //
 
-    function start(){
-            debugger;
-            var leftAfterFirst = [];
-            var randomFirst = Math.floor((Math.random() * defaultTemplate.length - 1) + 1);
-            var randomSecond = Math.floor((Math.random() * defaultTemplate.length - 1) + 1);
-            firstNumber = defaultTemplate[randomFirst];
-            secondNumber = defaultTemplate[randomSecond];
-
-        for(var x =0; x <defaultTemplate.length; x++){
+    function start() {
+        var randomFirst = Math.floor((Math.random() * defaultTemplate.length - 1) + 1);
+        var randomSecond = Math.floor((Math.random() * defaultTemplate.length - 1) + 1);
+        firstItem = defaultTemplate[randomFirst];
+        secondItem = defaultTemplate[randomSecond];
+        if(firstItem.slice(38, 40) != secondItem.slice(38, 40)){
+            tileContainer.innerHTML = firstItem + secondItem;
         }
-            tileContainer.innerHTML = firstNumber + secondNumber;
-
-
-
-        /*for(var x = 0; x<defaultTemplate.length; x++){
-            if(defaultTemplate[x] != firstNumber){
-                leftAfterFirstRandom.push(defaultTemplate[x]);
+        else{
+            for(var i =0; i<defaultTemplate.length; i++){
+                if(defaultTemplate[i].slice(38, 40) != secondItem.slice(38, 40)){
+                    leftItems.push(defaultTemplate[i]);
+                }
             }
-        }*/
-            /*if(firstNumber.slice(38,40) !== secondNumber.slice(38,40)){
-                tileContainer.innerHTML = firstNumber + secondNumber;
+            randomSecond = Math.floor((Math.random() * leftItems.length - 1) + 1);
+            secondItem = leftItems[randomSecond];
+            tileContainer.innerHTML = firstItem + secondItem;
+        }
+        for(var j = 0; j < defaultTemplate.length; j++){
+            if(defaultTemplate[j].slice(38, 40) != firstItem.slice(38, 40) && defaultTemplate[j].slice(38, 40) != secondItem.slice(38, 40)){
+                leftItems.push(defaultTemplate[j]);
             }
-            else{
-                secondNumber = leftAfterFirstRandom[Math.floor((Math.random() * defaultTemplate.length - 1) + 1)];
-                tileContainer.innerHTML = firstNumber + secondNumber;
-            }*/
-
-        };
+        }
+    }
 
     function moveUp() {
         debugger;
-        var arrCell = [];
-        var randomThird = Math.floor((Math.random() * leftAfterFirstRandom.length - 1) + 1);
-        thirdNumber = leftAfterFirstRandom[randomThird];
-
-        for(var i = 0; i < defaultTemplate.length; i++) {
-            if (defaultTemplate[i].slice(38, 39) === firstNumber.slice(38, 39) && defaultTemplate[i].slice(22, 23) === firstNumber.slice(22, 23)) {
-                arrCell.push(defaultTemplate[i]);
+        var randomNext = Math.floor((Math.random() * leftItems.length - 1) + 1);
+        nextItem = leftItems[randomNext];
+        tileContainer.innerHTML += nextItem;
+        leftItems = [];
+        for(var j = 0; j < defaultTemplate.length; j++){
+            for(var k = 0; k < tileContainer.children.length; k++){
+                if(defaultTemplate[j].slice(38, 40) != tileContainer.children[k].className.slice(26, 28)){
+                    leftItems.push(defaultTemplate[j]);
+                }
             }
-        }
-        if(firstNumber.slice(39,40) < arrCell[1].slice(39,40)){
-            tileContainer.innerHTML += thirdNumber;
-            return true;
-        }
 
-        else if(firstNumber.slice(39,40) < arrCell[2].slice(39,40)){
-            firstNumber = arrCell[0];
-            tileContainer.innerHTML = firstNumber;
-            tileContainer.innerHTML += thirdNumber;
         }
-        else if(firstNumber.slice(39,40) < arrCell[3].slice(39,40)){
-            firstNumber = arrCell[0];
-            tileContainer.innerHTML = firstNumber;
-            tileContainer.innerHTML += thirdNumber;
-        }
-        else{
-            tileContainer.innerHTML += thirdNumber;
-        }
+        return leftItems;
+     }
 
 
-        //tileContainer.innerHTML += thirdNumber;
-        console.log(tileContainer.innerHTML);
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     document.onkeydown = function(event){
         event.which = event.which || event.keyCode;
@@ -115,6 +109,4 @@
             moveUp();
         }
     };
-
-
     window.onload = start;

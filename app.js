@@ -77,6 +77,10 @@
     var secondItem = undefined;
     var nextItem = undefined;
     var leftItems = []; //
+    var cellFirst = [];
+    var cellSecond = [];
+    var cellThird = [];
+    var cellForth = [];
 
     function start() {
         var randomFirst = Math.floor((Math.random() * defaultTemplate.length - 1) + 1);
@@ -105,13 +109,25 @@
 
     function moveUp() {
         //debugger;
-        var randomNext = Math.floor((Math.random() * leftItems.length - 1) + 1);
-        nextItem = leftItems[randomNext];
-        for(var x = 0; x < tileContainer.children.length; x++){
-            if(tileContainer.children[x].className.slice(27, 28) >= 1){
-                tileContainer.children[x].className = defaultClasses[0];
+        for (var y= 0; y < tileContainer.children.length; y++) {
+            if(tileContainer.children[y].className.slice(26, 27) == 1){
+                cellFirst.push(tileContainer.children[y]);
+            }
+            else if(tileContainer.children[y].className.slice(26, 27) == 2){
+                cellSecond.push(tileContainer.children[y]);
+            }
+            else if(tileContainer.children[y].className.slice(26, 27) == 3){
+                cellThird.push(tileContainer.children[y]);
+            }
+            else if(tileContainer.children[y].className.slice(26, 27) == 4){
+                cellForth.push(tileContainer.children[y]);
             }
         }
+
+
+
+        var randomNext = Math.floor((Math.random() * leftItems.length - 1) + 1);
+        nextItem = leftItems[randomNext];
         tileContainer.innerHTML += nextItem;
         leftItems = [];
         for(var j = 0; j < defaultTemplate.length; j++) {
